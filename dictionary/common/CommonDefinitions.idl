@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025  Blue Robotics
+Copyright (c) 2025  Blue Robotics North Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -21,8 +21,8 @@ THE SOFTWARE.
 */
 //Put common constants, and other definitions here
 //and specify the module key
-@module_key(0x4242)
-module Blueberry {
-	
-	
-}
+@module_key(0x4244)
+module ::Blueberry::Devices {
+	//a handy sequence of 32-bit floats. This is like an array but variable length
+	typedef sequence <float> FloatSequence;
+};

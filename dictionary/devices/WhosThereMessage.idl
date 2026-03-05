@@ -20,37 +20,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+
 module ::Blueberry::Devices {
-	//an enum to convey PCB type
-	 enum HwType : uint16 {
-	 	//this is the default value
-		UNDEFINED   = 0xffff,
-		SFDQ      	= 0x0000,//this is a StarFishDaq
-		BLUE_SERVO	= 0x0001,
-		LUMEN       = 0x0002,
-		NUCLEO     	= 0x0003, //the ST family of development PCBs
-		BLUE_ESC	= 0x0004,
-		GIGABOARD   = 0x0005,
-		BLUE_BRIDGE	= 0x0006
-	};
-	
-	enum McuType : uint8 {
-		UNDEFINED = 0xff,
-		STM32F446 = 0x01,
-		STM32H563 = 0x02,
-		STM32H573 = 0x03,
-		STM32G071 = 0x04
-	};
-	
-	/*
-	 A message to convey hardware and firmware versions in addition to hardware type
+
+	/**
+	 * a request by the bus controller to all devices that have not communicated successfully recently
+	 * the controller can specify the probability and timeframe that the peripherals will respond
+	 * the peripherals will respond with an idPayload
 	 */
-	@topic("blueberry/devices/{device_type}/{nid}/version")
-	@message_key(0x8366)
-	message VersionMessage {
-		uint32 firmwareVersion;
-		uint8 hardwareRev;
-		HwType hardwareType;
-		McuType mcuType;
+	@topic("blueberry/devices/{device_type}/{nid}/whos-there")
+	@message_key(0x1971)
+	message WhosThereMessage {
+		float probability; //the probability that the peripheral will respond. 1.0 is 100% probability, 0.0 is zero.
+		float time; //the time in seconds within which the device should respond.
 	};
+	
+
+	
 };

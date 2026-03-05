@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025  Blue Robotics
+Copyright (c) 2025  Blue Robotics North Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -25,13 +25,15 @@ THE SOFTWARE.
  */
 module ThisIsATestModule::AndAnother {
 	//this defines the numerical namespace that official blueberry messages will live within
-	
-	const uint16 BLUEBERRY_NAMESPACE = 0x42;
-	
+
+
 	typedef uint16 BlahType[10];
 	typedef float Matrix3x3[3][3];
 	typedef uint32 AnotherType;
-	
+	const uint16 THIS_IS_A_CONSTANT = 0x42;
+	const string THIS_IS_A_STRING_CONSTANT = "blahblahblah";
+
+
 	enum TestEnum {
 		UNDEFINED = 65536,
 		FIRST_VALUE,
@@ -40,25 +42,22 @@ module ThisIsATestModule::AndAnother {
 		FOURTH_VALUE = 33,
 		FIFTH_VALUE,
 		SIXTH_VALUE = 34
-	}
-		
+	};
+
+
 
 	/*
 	 A message to convey hardware and firmware versions in addition to hardware type
 	 */
 	@topic("blueberry/devices/{device_type}/{nid}/test")
 	@revision(1)
-	@namespace(BLUEBERRY_NAMESPACE)
 	message TestMessage {
-		BlahType test1;
-		uint8 test2;
-		string test3;
-		AnotherType test13;
-		
-	
-	}
+		string <20> filename;
 
-}
+
+	};
+
+};
 
 import ThisIsATestModule;
 //A demo struct to debug stuff
@@ -68,9 +67,9 @@ struct TestStruct {
 	uint8 test5;
 	boolean test10;
 	string <20> test12;
-}
+};
 
-sequence <TestStruct> TestSequence;
+typedef sequence <TestStruct> TestSequence;
 typedef TestStruct TestStructArray[2];
 typedef TestSequence TestSequenceArray[3];
 module ThisIsATestModule {
@@ -80,7 +79,6 @@ module ThisIsATestModule {
 		 */
 		@topic("blueberry/devices/{device_type}/{nid}/test2")
 		@revision(0)
-		@namespace(BLUEBERRY_NAMESPACE)
 		message Test2Message {
 			::ThisIsATestModule::AndAnother::BlahType test6;
 			BlahType test14;//a test field
@@ -89,7 +87,6 @@ module ThisIsATestModule {
 			TestSequence test11;
 			TestStructArray test44;
 			TestSequenceArray test55;
-		}
-	}
-
-}
+		};
+	};
+};
