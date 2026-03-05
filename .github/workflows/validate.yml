@@ -17,4 +17,4 @@ jobs:
           chmod +x blueberry-cli
 
       - name: Validate dictionary
-        run: ./blueberry-cli . --output-format github
+        run: ./blueberry-cli . --output-format github 2>&1 | sed 's|file=\./|file=|g'
