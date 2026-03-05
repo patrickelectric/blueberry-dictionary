@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  pull-requests: write
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -17,4 +20,26 @@ jobs:
           chmod +x blueberry-cli
 
       - name: Validate dictionary
-        run: ./blueberry-cli . --output-format github 2>&1 | sed 's|file=\./|file=|g'
+        id: validate
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ./blueberry-cli . 2>&1 | tee validation-output.txt
+
+      - name: Comment validation errors on PR
+        if: steps.validate.outcome == 'failure' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo '## Dictionary Validation Errors'
+            echo ''
+            echo '```'
+            cat validation-output.txt
+            echo '```'
+          } > comment-body.md
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file comment-body.md
+
+      - name: Fail if validation failed
+        if: steps.validate.outcome == 'failure'
+        run: exit 1
