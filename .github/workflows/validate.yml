@@ -1,0 +1,20 @@
+name: Validate Dictionary
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download blueberry-cli
+        run: |
+          curl -fsSL -o blueberry-cli \
+            https://github.com/bluerobotics/blueberry-compiler/releases/download/v0.0.1/blueberry-cli-linux-x86_64
+          chmod +x blueberry-cli
+
+      - name: Validate dictionary
+        run: ./blueberry-cli . --output-format github
